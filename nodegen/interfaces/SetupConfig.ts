@@ -1,6 +1,5 @@
 export interface SetupConfig {
   defaultHeaders?: object
-  fqdn: string
   handle401?: any
   handle403?: any
   handle404?: any
