@@ -1,3 +1,6 @@
+# Ignore the openapi git folder
+.openapi-nodegen/git/
+
 # ide settings folders
 .idea/
 
