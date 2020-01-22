@@ -21,7 +21,7 @@ export default class HttpService {
    * Make the http requestPromise
    * @param {RequestObject} requestObject
    */
-  public async sendRequest (requestObject: RequestObject): Promise<request.Response> {
+  public async sendRequest (requestObject: RequestObject): Promise<any> {
     return new Promise((resolve, reject) => {
       requestObject.headers = Object.assign(requestObject.headers || {}, {
         Connection: 'keep-alive',
