@@ -1,3 +1,5 @@
+import request from 'request-promise';
+
 import HttpService from '../../lib/HttpService';
 import { HttpMethodEnum } from '../enums/HttpMethodEnum'
 {% set interfaces = importInterfaces(operations) %}
@@ -10,7 +12,7 @@ class {{ucFirst(operation_name)}}Service extends HttpService {
   {% for method, path in op.path -%}
     {% if isValidMethod(method)%}
   // {{ path.operationId }}
-  public {{ path.operationId }} ({{ pathParamsToDomainParams(method, path, true) }} additionalHeaders?: object): Promise<{{ path['x-response-definitions']['200'] if path['x-response-definitions']['200'] else 'any' }}>{
+  public {{ path.operationId }} ({{ pathParamsToDomainParams(method, path, true) }} additionalHeaders?: object): Promise<request.Response> {
     return this.sendRequest({
       method: HttpMethodEnum.{{ method | upper}},
       path: '{{ urlPathJoin(op.path_name)}}',
