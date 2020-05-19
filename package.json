@@ -1,0 +1,16 @@
+{
+  "name": "openapi-nodegen-typescript-server-client",
+  "version": "1.0.0",
+  "description": "Server client for typescript server",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acrontum/openapi-nodegen-typescript-server-client.git"
+  },
+  "author": "Acrontum",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acrontum/openapi-nodegen-typescript-server-client/issues"
+  },
+  "homepage": "https://github.com/acrontum/openapi-nodegen-typescript-server-client#readme"
+}
