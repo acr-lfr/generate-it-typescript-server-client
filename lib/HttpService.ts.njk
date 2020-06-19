@@ -1,7 +1,7 @@
 import request from 'request-promise';
 import urljoin from 'url-join';
 import config from '@/config';
-import { KeyValue, RequestObject } from '../nodegen/interfaces/RequestObject';
+import { RequestObject } from '../nodegen/interfaces/RequestObject';
 
 export default class HttpService {
   /**
@@ -9,7 +9,7 @@ export default class HttpService {
    * @param {Object} params
    * @param {String} path
    */
-  private static injectParamsToPath (params: KeyValue = {}, path: string) {
+  private static injectParamsToPath (params: any = {}, path: string) {
     Object.keys(params).forEach((param) => {
       path = path.replace(':' + param, params[param]);
     });
