@@ -4,13 +4,17 @@ import { RequestObject } from '../nodegen/interfaces/RequestObject';
 
 const urlJoin = require('url-join');
 
+interface KeyValue {
+  [key: string]: string
+}
+
 export default class HttpService {
   /**
    * Injects the values into a path
    * @param {Object} params
    * @param {String} path
    */
-  private static injectParamsToPath (params: object = {}, path: string) {
+  private static injectParamsToPath (params: KeyValue = {}, path: string) {
     Object.keys(params).forEach((param) => {
       path = path.replace(':' + param, params[param]);
     });
@@ -27,7 +31,7 @@ export default class HttpService {
         Connection: 'keep-alive',
       });
       const URL = urlJoin(
-              config.baseUrl,
+              config.{{ CLIENT_CONFIG_BASE_URL if CLIENT_CONFIG_BASE_URL else "baseUrl" }},
               HttpService.injectParamsToPath(
                       requestObject.params,
                       requestObject.path,

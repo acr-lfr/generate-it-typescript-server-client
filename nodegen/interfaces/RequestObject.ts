@@ -1,11 +1,15 @@
 import {HttpMethodEnum} from '../enums/HttpMethodEnum'
 
+export interface KeyValue {
+  [key: string]: string
+}
+
 export interface RequestObject {
   method: HttpMethodEnum
   path: string
-  formData?: object
-  params?: object
-  qs?: object
-  body?: object
-  headers?: object
+  formData?: any
+  params?: KeyValue
+  qs?: any
+  body?: any
+  headers?: any
 }
