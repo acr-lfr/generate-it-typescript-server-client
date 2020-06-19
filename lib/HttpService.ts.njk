@@ -1,12 +1,7 @@
 import request from 'request-promise';
+import urljoin from 'url-join';
 import config from '@/config';
-import { RequestObject } from '../nodegen/interfaces/RequestObject';
-
-const urlJoin = require('url-join');
-
-interface KeyValue {
-  [key: string]: string
-}
+import { KeyValue, RequestObject } from '../nodegen/interfaces/RequestObject';
 
 export default class HttpService {
   /**
@@ -30,7 +25,7 @@ export default class HttpService {
       requestObject.headers = Object.assign(requestObject.headers || {}, {
         Connection: 'keep-alive',
       });
-      const URL = urlJoin(
+      const URL = urljoin(
               config.{{ CLIENT_CONFIG_BASE_URL if CLIENT_CONFIG_BASE_URL else "baseUrl" }},
               HttpService.injectParamsToPath(
                       requestObject.params,
