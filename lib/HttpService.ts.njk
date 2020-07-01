@@ -59,7 +59,7 @@ export default class HttpService {
           if (err) {
             reject(err);
           } else {
-            resolve(httpResponse);
+            resolve(body);
           }
         });
       } catch (error) {
