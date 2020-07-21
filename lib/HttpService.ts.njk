@@ -38,6 +38,7 @@ export default class HttpService {
           requestPromiseObject = {
             headers: requestObject.headers,
             method: requestObject.method,
+            json: true,
             gzip: true,
             formData: requestObject.formData,
             resolveWithFullResponse: true,
