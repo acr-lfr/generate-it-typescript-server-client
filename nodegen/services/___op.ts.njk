@@ -10,7 +10,7 @@ class {{ucFirst(operation_name)}}Service extends HttpService {
   {% for method, path in op.path -%}
     {% if isValidMethod(method)%}
   // {{ path.operationId }}
-  public {{ path.operationId }} ({{ pathParamsToDomainParams(method, path, true) }} additionalHeaders?: object): Promise<{{ path['x-response-definitions']['200'] if path['x-response-definitions']['200'] else 'any' }}>{
+  public {{ path.operationId }} ({{ pathParamsToDomainParams(method, path, true) }} additionalHeaders?: Record<string, any>): Promise<{{ path['x-response-definitions']['200'] if path['x-response-definitions']['200'] else 'any' }}>{
     return this.sendRequest({
       method: HttpMethodEnum.{{ method | upper}},
       path: '{{ urlPathJoin(op.path_name)}}',
