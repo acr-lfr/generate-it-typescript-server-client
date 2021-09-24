@@ -1,7 +1,9 @@
 
-# openapi-nodegen-typescript-server-client
+# generate-it-typescript-server-client
 
 Server client for typescript server
+
+By default the http lib uses got - but this lib can be changed to anything you need it to be.
 
   
 
