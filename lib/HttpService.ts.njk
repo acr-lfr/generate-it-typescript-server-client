@@ -1,15 +1,17 @@
-import request from 'request-promise';
+import FormData from 'form-data';
+import got, { Method } from 'got';
 import urljoin from 'url-join';
-import config from '@/config';
 import { RequestObject } from '../nodegen/interfaces/RequestObject';
+import config from '@/config';
 
 export default class HttpService {
   /**
-   * Injects the values into a path
-   * @param {Object} params
-   * @param {String} path
+   * Injects the values into a path, eg
+   * '/user/:username', {username: 'bob'}
+   * would result in
+   * '/user/bob'
    */
-  private static injectParamsToPath (params: any = {}, path: string) {
+  static injectParamsToPath (params: any = {}, path: string) {
     Object.keys(params).forEach((param) => {
       path = path.replace(':' + param, params[param]);
     });
@@ -17,55 +19,38 @@ export default class HttpService {
   }
 
   /**
-   * Make the http requestPromise
-   * @param {RequestObject} requestObject
+   * Make the http request
    */
-  public async sendRequest (requestObject: RequestObject): Promise<any> {
-    return new Promise((resolve, reject) => {
-      requestObject.headers = Object.assign(requestObject.headers || {}, {
-        Connection: 'keep-alive',
-      });
-      const URL = urljoin(
-              config.{{ CLIENT_CONFIG_BASE_URL if CLIENT_CONFIG_BASE_URL else "baseUrl" }},
-              HttpService.injectParamsToPath(
-                      requestObject.params,
-                      requestObject.path,
-              ),
-      );
-      try {
-        let requestPromiseObject;
-        if (requestObject.formData) {
-          requestPromiseObject = {
-            headers: requestObject.headers,
-            method: requestObject.method,
-            json: true,
-            gzip: true,
-            formData: requestObject.formData,
-            resolveWithFullResponse: true,
-            url: URL,
-          };
-        } else {
-          requestPromiseObject = {
-            body: requestObject.body,
-            headers: requestObject.headers,
-            json: true,
-            method: requestObject.method,
-            qs: requestObject.qs,
-            gzip: true,
-            resolveWithFullResponse: true,
-            url: URL,
-          };
-        }
-        request(requestPromiseObject, (err, httpResponse, body) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(body);
-          }
-        });
-      } catch (error) {
-        throw error;
-      }
+  async sendRequest (requestObject: RequestObject): Promise<any> {
+    requestObject.headers = Object.assign(requestObject.headers || {}, {
+      Connection: 'keep-alive',
+      'api-key': config.YOURSERVER.apiKey, // CHANGE THIS!!
     });
+    const URL = urljoin(
+      config.YOURSERVER.baseUrl,  // CHANGE THIS!!
+      HttpService.injectParamsToPath(
+        requestObject.params,
+        requestObject.path,
+      ),
+    );
+
+    let fd = new FormData();
+    if (requestObject.formData) {
+      for (let key in requestObject.formData) {
+        fd.append(key, requestObject.formData[key]);
+      }
+      requestObject.headers['Content-Type'] = 'multipart/form-data';
+    }
+
+    const qs = (new URLSearchParams(requestObject.qs || {})).toString();
+
+    const { body } = await got({
+      body: requestObject.formData ? fd : requestObject.body,
+      headers: requestObject.headers,
+      method: requestObject.method as Method,
+      searchParams: qs && qs.length ? '?' + qs : '',
+      url: URL,
+    });
+    return body;
   }
 }
