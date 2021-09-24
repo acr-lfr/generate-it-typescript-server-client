@@ -49,6 +49,7 @@ export default class HttpService {
       headers: requestObject.headers,
       method: requestObject.method as Method,
       searchParams: qs && qs.length ? '?' + qs : '',
+      responseType: 'json',
       url: URL,
     });
     return body;
