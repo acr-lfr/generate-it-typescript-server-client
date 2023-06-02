@@ -20,14 +20,14 @@ By default the http lib will pull `config.baseUrl` as the base url for all reque
 
 "scripts": {
 
-"generate:nodegen:tsclient": "openapi-nodegen ./api_1.0.0.yml -o ./src/services/client -t https://github.com/acrontum/openapi-nodegen-typescript-server-client.git",
+"generate:nodegen:tsclient": "generate-it ./api_1.0.0.yml -o ./src/services/client -t https://github.com/acr-lfr/generate-it-typescript-server-client.git",
 
 ```
 Override the baseUrl config path with something more specific to your api:
 ```json
 "scripts": {
 
-"generate:nodegen:tsclient": "openapi-nodegen ./api_1.0.0.yml -o ./src/services/client -t https://github.com/acrontum/openapi-nodegen-typescript-server-client.git -$ CLIENT_CONFIG_BASE_URL=imageServer.baseUrl",
+"generate:nodegen:tsclient": "generate-it ./api_1.0.0.yml -o ./src/services/client -t https://github.com/acr-lfr/generate-it-typescript-server-client.git -$ CLIENT_CONFIG_SERVER_NAME=imageServer",
 
 ```
 
