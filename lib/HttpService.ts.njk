@@ -1,8 +1,8 @@
 import FormData from 'form-data';
-import got, { Method } from 'got';
 import urljoin from 'url-join';
 import { RequestObject } from '../nodegen/interfaces/RequestObject';
 import config from '@/config';
+import axios, { AxiosRequestConfig, Method } from 'axios';
 
 export default class HttpService {
   /**
@@ -24,10 +24,10 @@ export default class HttpService {
   async sendRequest (requestObject: RequestObject): Promise<any> {
     requestObject.headers = Object.assign(requestObject.headers || {}, {
       Connection: 'keep-alive',
-      'api-key': config.YOURSERVER.apiKey, // CHANGE THIS!!
+      'api-key': config.{{ CLIENT_CONFIG_SERVER_NAME }}.apiKey,
     });
     const URL = urljoin(
-      config.YOURSERVER.baseUrl,  // CHANGE THIS!!
+      config.{{ CLIENT_CONFIG_SERVER_NAME }}.baseUrl,
       HttpService.injectParamsToPath(
         requestObject.params,
         requestObject.path,
@@ -44,14 +44,16 @@ export default class HttpService {
 
     const qs = (new URLSearchParams(requestObject.qs || {})).toString();
 
-    const { body } = await got({
-      body: requestObject.formData ? fd : requestObject.body,
+    const axiosReq: AxiosRequestConfig = {
       headers: requestObject.headers,
       method: requestObject.method as Method,
-      searchParams: qs && qs.length ? '?' + qs : '',
-      responseType: 'json',
+      data: requestObject.formData ? fd : requestObject.body,
+      params: qs && qs.length ? '?' + qs : '',
       url: URL,
-    });
-    return body;
+      responseType: 'json',
+    };
+
+    const { data } = await axios( axiosReq );
+    return data;
   }
 }
