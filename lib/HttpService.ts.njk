@@ -33,6 +33,7 @@ export default class HttpService {
           requestObject.path,
         ),
       );
+      const qs = (new URLSearchParams(requestObject.qs || {})).toString();
       try {
         let requestPromiseObject;
         if (requestObject.formData) {
@@ -40,6 +41,7 @@ export default class HttpService {
             headers: requestObject.headers,
             method: requestObject.method,
             json: true,
+            qs,
             gzip: true,
             formData: requestObject.formData,
             resolveWithFullResponse: true,
@@ -51,7 +53,7 @@ export default class HttpService {
             headers: requestObject.headers,
             json: true,
             method: requestObject.method,
-            qs: requestObject.qs,
+            qs,
             gzip: true,
             resolveWithFullResponse: true,
             url: URL,
