@@ -9,9 +9,9 @@ export default class HttpService {
    * @param {Object} params
    * @param {String} path
    */
-  private static injectParamsToPath (params: any = {}, path: string) {
+  private static injectParamsToPath (params: any = {}, path: string): string {
     Object.keys(params).forEach((param) => {
-      path = path.replace(':' + param, params[param]);
+      path = path.replace(':' + param, encodeURI(params[param]));
     });
     return path;
   }
@@ -33,7 +33,10 @@ export default class HttpService {
           requestObject.path,
         ),
       );
-      const qs = (new URLSearchParams(requestObject.qs || {})).toString();
+      const qs:{[key:string]: string} = {};
+      for (const query in requestObject.qs) {
+        qs[query] = encodeURI(requestObject.qs[query]);
+      }
       try {
         let requestPromiseObject;
         if (requestObject.formData) {
@@ -67,7 +70,7 @@ export default class HttpService {
           }
         });
       } catch (error) {
-        throw error;
+        throw error.message;
       }
     });
   }
